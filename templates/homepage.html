@@ -1,0 +1,42 @@
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+
+{% block extra_head %}
+<script>
+	function search_term_focus(elem){
+		if(elem.value == '[e.g. Django]')
+			elem.value = '';
+		else if(elem.value == '')
+			elem.value = '[e.g. Django]';
+	}
+</script>
+{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+    <h1 style="text-align: center">{% trans "Find Projects to Contribute" %}</h1>	
+    <p id="project-search">
+        <form action="{% url search_url %}" method="get">{% csrf_token %}
+            <div class="search-param">
+                Language 
+                <select id="slct-lang" name="lang" class="medium">
+                    {% for lang in languages %}
+                    <option value="{{ lang.slug }}">{{ lang.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="search-param">
+                Term
+                <input id="text-query" name="q" class="medium" value="[e.g. Django]" onfocus="search_term_focus(this)" onblur="search_term_focus(this)"/>
+            </div>
+            <div class="search-param">
+                <input type="submit" class="btn large primary" value="Search" />
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </p>
+{% endblock %}

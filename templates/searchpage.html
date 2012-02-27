@@ -1,0 +1,26 @@
+{% extends "theme_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+
+{% block extra_head %}
+<script>
+</script>
+{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body %}
+
+    {% if projects %}
+    <h1>Results for '{{ request.GET.q }}' in '{{ request.GET.lang }}'</h1>
+        {% for proj in projects %}
+            <div class="search-result">
+                <li class="search-result-title"><h3><a href="{{ proj.1 }}">{{ proj.0 }}</a></h3></li>
+                <li class="search-result-desc">{{ proj.2 }}</li>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+{% endblock %}
