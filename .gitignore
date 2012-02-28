@@ -6,3 +6,7 @@
 #################
 *.save
 *.backup
+
+# Local settings
+#################
+local_settings.py

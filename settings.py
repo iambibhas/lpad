@@ -6,7 +6,13 @@ import posixpath
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = True
+# local_settings.py can be used to override environment-specific settings
+# like database and email that differ between development and production.
+try:
+    from local_settings import *
+except ImportError:
+    pass
+    
 TEMPLATE_DEBUG = DEBUG
 
 # tells Pinax to serve media through the staticfiles app.
@@ -16,26 +22,7 @@ SERVE_MEDIA = DEBUG
 # most users. See <URL> for more information
 COMPRESS = False
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
-ADMINS = [
-    # ("Your Name", "your_email@domain.com"),
-]
-
 MANAGERS = ADMINS
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql", # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
-        "NAME": "lpad",                       # Or path to database file if using sqlite3.
-        "USER": "root",                             # Not used with sqlite3.
-        "PASSWORD": "toor",                         # Not used with sqlite3.
-        "HOST": "",                             # Set to empty string for localhost. Not used with sqlite3.
-        "PORT": "",                             # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -168,10 +155,3 @@ EMAIL_BACKEND = "mailer.backend.DbBackend"
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS": False,
 }
-
-# local_settings.py can be used to override environment-specific settings
-# like database and email that differ between development and production.
-try:
-    from local_settings import *
-except ImportError:
-    pass
