@@ -25,22 +25,26 @@ def search(request):
         return redirect('/')
         
     language = request.GET['lang']
-    query = request.GET['q'] if "q" in request.GET and request.GET['q'] != "[e.g. Django]" else ''
+    query = request.GET['q'] if ("q" in request.GET and request.GET['q'] != "[e.g. Django]") else ''
     
     projects_response = launchpad.projects.search(text=(query if query else None))
         
     projects = []
     
-    for i in range(0, 10):
+    for pr in projects_response:
         proj = []
-        proj.append(projects_response[i].name)
-        proj.append(projects_response[i].web_link)
-        summary = projects_response[i].summary.replace("\n", " ")
-        proj.append(summary)
-        
-        projects.append(proj)
-    
-    print projects
+        try:
+            lang = pr.programming_language.lower()
+        except Exception as e:
+            lang = pr.programming_language
+            
+        if (lang == language.lower() or not language) and (pr.active == True):
+            proj.append(pr.name)
+            proj.append(pr.web_link)
+            summary = pr.summary.replace("\n", " ")
+            proj.append(summary)
+            if not proj in projects:
+                projects.append(proj)
         
     """
     for project in projects :

@@ -1,0 +1,8 @@
+# Compiled files
+#################
+*.pyc
+
+# Misc
+#################
+*.save
+*.backup
