@@ -12,7 +12,6 @@ handler500 = "pinax.views.server_error"
 urlpatterns = patterns("",
     url(r"^$", "search.views.home", name="home"),
     url(r"^search/$", "search.views.search", name="search_url"),
-    url(r"^dump/$", "search.views.dump", name="dump"),
     url(r"^admin/", include(admin.site.urls)),
 )
 

@@ -9,6 +9,6 @@ class Query(models.Model):
     from_ip = models.CharField(max_length=50, null=True)
     
     def __unicode__(self):
-        return self.language + ', ' + self.text
+        return self.language.name + ', ' + self.text
     class Meta:
         verbose_name_plural = "Queries"
