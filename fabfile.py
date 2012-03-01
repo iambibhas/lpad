@@ -53,7 +53,7 @@ def install_site():
     # require('release', provided_by=[deploy])
     with cd(env.site_path):
         sudo('cp %(project_name)s/%(project_name)s /etc/apache2/sites-available/%(project_name)s' % env)
-    sudo('cd /etc/apache2/sites-available/; a2ensite %(project_name)s' % env, pty=True) 
+    sudo('cd /etc/apache2/sites-available/; a2dissite %(project_name)s; a2ensite %(project_name)s' % env, pty=True) 
     
 def install_requirements():
     with cd(env.site_path):
