@@ -16,3 +16,4 @@ django_compressor==1.0.1
 pinax-theme-bootstrap==0.1.5
 
 MySQL-python==1.2.3
+launchpadlib==1.9.12

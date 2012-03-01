@@ -15,17 +15,19 @@ def webserver():
 
 def test():
     run('uname -a')
+    sudo('tail -f /home/ubuntu/.pythonbrew/log/build.log')
+    
 
 def setup():
     """
     Setup a fresh virtualenv as well as a few useful directories, then run
     a full deployment
     """
-    sudo('mkdir -p %(path)s; chown %(user)s:%(user)s %(path)s;' % env, pty=True)
-    with cd(env.path):
-        run('virtualenv %(project_name)s --no-site-packages' % env, pty=True)
+    # sudo('apt-get install postfix')
+    # sudo('mkdir -p %(path)s; chown %(user)s:%(user)s %(path)s;' % env, pty=True)
+    with cd(env.site_path):
+        # run('virtualenv %(project_name)s --no-site-packages' % env, pty=True)
         run('mkdir -p %(project_name)s/releases/previous; mkdir packages;' % env, pty=True)
-        run('mkdir %(project_name)s/%(project_name)s' % env, pty=True) 
         
 def deploy():
     import time
@@ -40,7 +42,7 @@ def upload_tar_from_git():
     local('git archive --format=tar master | gzip > %(release)s.tar.gz' % env)
     put('%(release)s.tar.gz' % env, '%(site_path)s/packages/' % env)
     with cd(env.site_path):
-        # run('cd %(project_name)s && mv * ../releases/previous/' % env, pty=True)
+        run('cd %(project_name)s && mv -uT * ../releases/previous/' % env, pty=True)
         run('cd %(project_name)s && tar zxf ../packages/%(release)s.tar.gz' % env, pty=True)
     local('rm %(release)s.tar.gz' % env)    
 
@@ -56,6 +58,10 @@ def install_requirements():
         with prefix('source bin/activate'):
             sudo('pip install -r %(project_name)s/requirements/project.txt' % env)
     
+def db_setup():
+    with cd(env.site_path):
+        put('%(project_name)s.sql' % env, '%(project_name)s/')
+        
 def restart_webserver():
     # "Restart the web server"
     sudo('/etc/init.d/apache2 reload', pty=True)
