@@ -1,12 +1,16 @@
 <VirtualHost *:80>
 		ServerName lpad.bibhas.in
-        WSGIDaemonProcess lpad-production user=ubuntu group=ubuntu threads=10 python-path=/home/ubuntu/sites/lpad/lib/python2.6/site-packages
+        
+        WSGIDaemonProcess lpad-production user=ubuntu group=ubuntu threads=10 python-path=/home/ubuntu/sites/lpad/lib/python2.7/site-packages
         WSGIProcessGroup lpad-production
         WSGIScriptAlias / /home/ubuntu/sites/lpad/lpad/wsgi.py
+        WSGIPythonPath /home/ubuntu/sites/lpad/lib/python2.7/site-packages
+        
         <Directory /home/ubuntu/sites/lpad/lpad>
             Order deny,allow
             Allow from all
         </Directory>
+        
         ErrorLog /var/log/apache2/lpad-error.log
         LogLevel warn
         CustomLog /var/log/apache2/access.log combined

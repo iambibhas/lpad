@@ -27,7 +27,7 @@ def setup():
     # sudo('mkdir -p %(path)s; chown %(user)s:%(user)s %(path)s;' % env, pty=True)
     with cd(env.site_path):
         # run('virtualenv %(project_name)s --no-site-packages' % env, pty=True)
-        run('mkdir -p %(project_name)s/releases/previous; mkdir packages;' % env, pty=True)
+        run('mkdir -p releases/previous; mkdir packages;' % env, pty=True)
         
 def deploy():
     import time
@@ -42,7 +42,9 @@ def upload_tar_from_git():
     local('git archive --format=tar master | gzip > %(release)s.tar.gz' % env)
     put('%(release)s.tar.gz' % env, '%(site_path)s/packages/' % env)
     with cd(env.site_path):
-        run('cd %(project_name)s && mv -uT * ../releases/previous/' % env, pty=True)
+        run('cd %(project_name)s && cp -ru * ../releases/previous/' % env, pty=True)
+        run('cd %(project_name)s && rm -rf *' % env, pty=True)
+        run('cd %(project_name)s && cp ../releases/previous/local_settings.py ./' % env, pty=True)
         run('cd %(project_name)s && tar zxf ../packages/%(release)s.tar.gz' % env, pty=True)
     local('rm %(release)s.tar.gz' % env)    
 
